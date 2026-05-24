@@ -1,12 +1,14 @@
 package model.comp;
 
+import model.visitor.ExpressionVisitor;
+
 public class Division extends BinaryOperator {
     public Division(Expression left, Expression right) {
         super(left, right);
     }
 
     @Override
-    public double evaluate() {
-        return (double) left.evaluate() / right.evaluate();
+    public double accept(ExpressionVisitor visitor) {
+        return visitor.visit(this);
     }
 }

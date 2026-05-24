@@ -1,6 +1,6 @@
 package model.state;
 
-public class SuccessState extends CalculatorState {
+public class SuccessState extends NumberState {
     @Override
     public void handleNumber(CalculatorContext context, String input) {
         context.clearInput();

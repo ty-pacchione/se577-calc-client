@@ -1,5 +1,7 @@
 package model.comp;
 
+import model.visitor.ExpressionVisitor;
+
 public interface Expression {
-    public abstract double evaluate();
+    double accept(ExpressionVisitor visitor);
 }

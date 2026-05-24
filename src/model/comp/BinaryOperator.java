@@ -8,4 +8,12 @@ public abstract class BinaryOperator implements Expression {
         this.left = left;
         this.right = right;
     }
+
+    public Expression getLeft() {
+        return left;
+    }
+
+    public Expression getRight() {
+        return right;
+    }
 }

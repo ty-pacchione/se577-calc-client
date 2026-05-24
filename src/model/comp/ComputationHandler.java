@@ -1,8 +1,15 @@
 package model.comp;
 
+import model.visitor.ExpressionEvaluator;
+import model.visitor.ExpressionVisitor;
+
 public class ComputationHandler {
+    private ExpressionVisitor visitor = new ExpressionEvaluator();
+
     public String compute(String calculation) {
-        return String.format("%.5f", parse(calculation).evaluate());
+        Expression expression = parse(calculation);
+        double result = expression.accept(visitor);
+        return String.format("%.5f", result);
     }
 
     private Expression parse(String calc) {

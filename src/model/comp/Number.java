@@ -1,5 +1,7 @@
 package model.comp;
 
+import model.visitor.ExpressionVisitor;
+
 public class Number implements Expression {
     private int value;
 
@@ -7,8 +9,12 @@ public class Number implements Expression {
         this.value = value;
     }
 
-    @Override
-    public double evaluate() {
+    public int getValue() {
         return value;
+    }
+
+    @Override
+    public double accept(ExpressionVisitor visitor) {
+        return visitor.visit(this);
     }
 }
