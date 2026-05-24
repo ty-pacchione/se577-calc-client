@@ -1,16 +1,33 @@
 package model.state;
 
-import model.comp.ComputationHandler;
+import model.observer.Observer;
+import model.observer.Subject;
 
-public class CalculatorContext {
-    private String input;
+public class CalculatorContext extends Subject implements Observer {
     private CalculatorState state;
-    private ComputationHandler parser;
+    private CalculationHandler handler;
 
-    public CalculatorContext(ComputationHandler parser) {
-        input = "";
-        state = new ClearedState();
-        this.parser = parser;
+    public CalculatorContext(CalculationHandler handler) {
+        this.handler = handler;
+        state = new EmptyState();
+    }
+    
+    public void addToCalculation(String next) {
+        handler.addToCalculation(next);
+    }
+
+    public void clearCalculation() {
+        handler.clearCalculation();
+    }
+
+    public void setState(CalculatorState newState) {
+        state = newState;
+    }
+
+    public void compute() {
+        String calculation = handler.getCalculation();
+        clearCalculation();
+        notifyObservers(calculation);
     }
 
     public void handleInput(String input) {
@@ -24,27 +41,8 @@ public class CalculatorContext {
             state.handleClear(this);
     }
 
-    public String getInput() {
-        return input;
-    }
-
-    public void setInput(String newInput) {
-        input = newInput;
-    }
-    
-    public void addInput(String next) {
-        input += next;
-    }
-
-    public void clearInput() {
-        input = "";
-    }
-
-    public void setState(CalculatorState newState) {
-        state = newState;
-    }
-
-    public String compute() {
-        return parser.compute(input);
+    @Override
+    public void update(String message) {
+        handleInput(message);
     }
 }

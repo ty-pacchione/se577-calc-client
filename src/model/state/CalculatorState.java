@@ -1,11 +1,23 @@
 package model.state;
 
-public interface CalculatorState {
-    void handleNumber(CalculatorContext context, String number);
+public abstract class CalculatorState {
+    public void handleNumber(CalculatorContext context, String number) {
+        context.addToCalculation(number);
+        context.setState(new NumberState());
+    }
 
-    void handleOperator(CalculatorContext context, String operator);
+    public void handleOperator(CalculatorContext context, String operator) {
+        context.addToCalculation(operator);
+        context.setState(new OperatorState());
+    }
 
-    void handleEquals(CalculatorContext context);
+    public void handleEquals(CalculatorContext context) {
+        context.compute();
+        context.setState(new SuccessState());
+    }
 
-    void handleClear(CalculatorContext context);
+    public void handleClear(CalculatorContext context) {
+        context.clearCalculation();
+        context.setState(new EmptyState());
+    }
 }

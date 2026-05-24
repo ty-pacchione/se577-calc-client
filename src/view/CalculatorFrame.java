@@ -9,9 +9,10 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import model.state.CalculatorContext;
+import model.observer.Observer;
+import model.observer.Subject;
 
-public class CalculatorFrame {
+public class CalculatorFrame extends Subject implements Observer {
     public static final String[] buttons = {
             "7", "8", "9", "/",
             "4", "5", "6", "*",
@@ -19,11 +20,10 @@ public class CalculatorFrame {
             "0", "C", "=", "+"
     };
 
-    private CalculatorContext context;
     private JFrame frame;
+    private JTextField displayPanel;
 
-    public CalculatorFrame(CalculatorContext context) {
-        this.context = context;
+    public CalculatorFrame() {
         makeFrame();
     }
 
@@ -33,10 +33,10 @@ public class CalculatorFrame {
         frame.setSize(400, 500);
         frame.setLayout(new BorderLayout());
 
-        JTextField displayPanel = makeDisplayPanel();
+        displayPanel = makeDisplayPanel();
         frame.add(displayPanel, BorderLayout.NORTH);
 
-        JPanel buttonPanel = makeButtonPanel(displayPanel);
+        JPanel buttonPanel = makeButtonPanel();
         frame.add(buttonPanel, BorderLayout.CENTER);
     }
 
@@ -50,7 +50,7 @@ public class CalculatorFrame {
         return displayPanel;
     }
 
-    private JPanel makeButtonPanel(JTextField displayPanel) {
+    private JPanel makeButtonPanel() {
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new GridLayout(4, 4, 10, 10));
 
@@ -58,8 +58,7 @@ public class CalculatorFrame {
             JButton button = new JButton(text);
 
             button.addActionListener(event -> {
-                context.handleInput(event.getActionCommand());
-                displayPanel.setText(context.getInput());
+                notifyObservers(event.getActionCommand());
             });
 
             buttonPanel.add(button);
@@ -70,5 +69,15 @@ public class CalculatorFrame {
 
     public void show() {
         frame.setVisible(true);
+    }
+
+    @Override
+    public void update(String message) {
+        int index = message.indexOf("=");
+        if (index > 0) {
+            displayPanel.setText(message.substring(index + 1));
+        } else {
+            displayPanel.setText(message);
+        }
     }
 }

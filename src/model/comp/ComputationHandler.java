@@ -1,15 +1,21 @@
 package model.comp;
 
-import model.visitor.ExpressionEvaluator;
+import model.observer.Observer;
+import model.observer.Subject;
 import model.visitor.ExpressionVisitor;
 
-public class ComputationHandler {
-    private ExpressionVisitor visitor = new ExpressionEvaluator();
+public class ComputationHandler extends Subject implements Observer {
+    private ExpressionVisitor visitor;
 
-    public String compute(String calculation) {
+    public ComputationHandler(ExpressionVisitor visitor) {
+        this.visitor = visitor;
+    }
+
+    public void compute(String calculation) {
         Expression expression = parse(calculation);
         double result = expression.accept(visitor);
-        return String.format("%.5f", result);
+        String resultText = String.format("%.5f", result);
+        notifyObservers(calculation + "=" + resultText);
     }
 
     private Expression parse(String calc) {
@@ -34,7 +40,7 @@ public class ComputationHandler {
     }
 
     private Subtraction parseSubtraction(String calc) {
-        int index = calc.indexOf("-");
+        int index = calc.lastIndexOf("-");
         String left = calc.substring(0, index);
         String right = calc.substring(index + 1);
         return new Subtraction(parse(left), parse(right));
@@ -48,7 +54,7 @@ public class ComputationHandler {
     }
 
     private Division parseDivision(String calc) {
-        int index = calc.indexOf("/");
+        int index = calc.lastIndexOf("/");
         String left = calc.substring(0, index);
         String right = calc.substring(index + 1);
         return new Division(parse(left), parse(right));
@@ -56,5 +62,10 @@ public class ComputationHandler {
 
     private Number parseNumber(String calc) {
         return new Number(Integer.parseInt(calc));
+    }
+
+    @Override
+    public void update(String message) {
+        compute(message);
     }
 }

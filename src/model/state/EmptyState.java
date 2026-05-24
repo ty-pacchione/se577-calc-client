@@ -1,6 +1,6 @@
 package model.state;
 
-public class ClearedState extends NumberState {
+public class EmptyState extends CalculatorState {
     @Override
     public void handleOperator(CalculatorContext context, String input) { }
 
