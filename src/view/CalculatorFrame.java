@@ -9,8 +9,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import model.observer.Observer;
-import model.observer.Subject;
+import observer.Observer;
+import observer.Subject;
 
 public class CalculatorFrame extends Subject implements Observer {
     public static final String[] buttons = {
@@ -74,10 +74,10 @@ public class CalculatorFrame extends Subject implements Observer {
     @Override
     public void update(String message) {
         int index = message.indexOf("=");
-        if (index > 0) {
-            displayPanel.setText(message.substring(index + 1));
-        } else {
+        if (index == -1) {
             displayPanel.setText(message);
+        } else {
+            displayPanel.setText(message.substring(index + 1));
         }
     }
 }

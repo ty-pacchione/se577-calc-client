@@ -1,6 +1,6 @@
-package model.comp;
+package comp;
 
-import model.visitor.ExpressionVisitor;
+import visitor.ExpressionVisitor;
 
 public class Addition extends BinaryOperator {
     public Addition(Expression left, Expression right) {

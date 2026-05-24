@@ -4,13 +4,13 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-import model.observer.Observer;
+import observer.Observer;
 
-public class Client implements Observer {
+public class CalculatorClient implements Observer {
     private Socket clientSocket;
     private PrintWriter out;
 
-    public Client(String host, int port) {
+    public CalculatorClient(String host, int port) {
         connect(host, port);
     }
 

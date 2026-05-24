@@ -1,6 +1,6 @@
-package model.comp;
+package comp;
 
-import model.visitor.ExpressionVisitor;
+import visitor.ExpressionVisitor;
 
 public class Division extends BinaryOperator {
     public Division(Expression left, Expression right) {

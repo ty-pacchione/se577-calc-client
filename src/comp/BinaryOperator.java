@@ -1,4 +1,4 @@
-package model.comp;
+package comp;
 
 public abstract class BinaryOperator implements Expression {
     protected Expression left;

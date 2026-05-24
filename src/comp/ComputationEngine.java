@@ -1,24 +1,17 @@
-package model.comp;
+package comp;
 
-import model.observer.Observer;
-import model.observer.Subject;
-import model.visitor.ExpressionVisitor;
+import observer.Subject;
+import visitor.ExpressionEvaluator;
 
-public class ComputationHandler extends Subject implements Observer {
-    private ExpressionVisitor visitor;
-
-    public ComputationHandler(ExpressionVisitor visitor) {
-        this.visitor = visitor;
-    }
-
+public class ComputationEngine extends Subject {
     public void compute(String calculation) {
-        Expression expression = parse(calculation);
-        double result = expression.accept(visitor);
+        Expression expr = parseExpression(calculation);
+        double result = expr.accept(new ExpressionEvaluator());
         String resultText = String.format("%.5f", result);
         notifyObservers(calculation + "=" + resultText);
     }
 
-    private Expression parse(String calc) {
+    private Expression parseExpression(String calc) {
         if (calc.matches(".+\\+.+"))
             return parseAddition(calc);
         if (calc.matches(".+-.+"))
@@ -36,36 +29,31 @@ public class ComputationHandler extends Subject implements Observer {
         int index = calc.indexOf("+");
         String left = calc.substring(0, index);
         String right = calc.substring(index + 1);
-        return new Addition(parse(left), parse(right));
+        return new Addition(parseExpression(left), parseExpression(right));
     }
 
     private Subtraction parseSubtraction(String calc) {
         int index = calc.lastIndexOf("-");
         String left = calc.substring(0, index);
         String right = calc.substring(index + 1);
-        return new Subtraction(parse(left), parse(right));
+        return new Subtraction(parseExpression(left), parseExpression(right));
     }
 
     private Multiplication parseMultiplication(String calc) {
         int index = calc.indexOf("*");
         String left = calc.substring(0, index);
         String right = calc.substring(index + 1);
-        return new Multiplication(parse(left), parse(right));
+        return new Multiplication(parseExpression(left), parseExpression(right));
     }
 
     private Division parseDivision(String calc) {
         int index = calc.lastIndexOf("/");
         String left = calc.substring(0, index);
         String right = calc.substring(index + 1);
-        return new Division(parse(left), parse(right));
+        return new Division(parseExpression(left), parseExpression(right));
     }
 
     private Number parseNumber(String calc) {
         return new Number(Integer.parseInt(calc));
-    }
-
-    @Override
-    public void update(String message) {
-        compute(message);
     }
 }

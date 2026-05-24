@@ -1,6 +1,6 @@
-package model.comp;
+package comp;
 
-import model.visitor.ExpressionVisitor;
+import visitor.ExpressionVisitor;
 
 public class Subtraction extends BinaryOperator {
     public Subtraction(Expression left, Expression right) {

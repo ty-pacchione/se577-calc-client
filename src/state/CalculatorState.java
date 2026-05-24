@@ -1,13 +1,13 @@
-package model.state;
+package state;
 
 public abstract class CalculatorState {
     public void handleNumber(CalculatorContext context, String number) {
-        context.addToCalculation(number);
+        context.addInput(number);
         context.setState(new NumberState());
     }
 
     public void handleOperator(CalculatorContext context, String operator) {
-        context.addToCalculation(operator);
+        context.addInput(operator);
         context.setState(new OperatorState());
     }
 
@@ -17,7 +17,7 @@ public abstract class CalculatorState {
     }
 
     public void handleClear(CalculatorContext context) {
-        context.clearCalculation();
+        context.clearInput();
         context.setState(new EmptyState());
     }
 }

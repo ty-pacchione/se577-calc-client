@@ -1,26 +1,21 @@
 package main;
 
-import model.comp.ComputationHandler;
-import model.state.CalculationHandler;
-import model.state.CalculatorContext;
-import model.visitor.ExpressionEvaluator;
-import model.visitor.ExpressionVisitor;
+// import client.CalculatorClient;
+import comp.ComputationEngine;
+import state.CalculatorContext;
 import view.CalculatorFrame;
 
 public class Main {
     public static void main(String[] args) {
         CalculatorFrame view = new CalculatorFrame();
-
-        CalculationHandler handler = new CalculationHandler();
-        CalculatorContext context = new CalculatorContext(handler);
-
-        ExpressionVisitor visitor = new ExpressionEvaluator();
-        ComputationHandler computer = new ComputationHandler(visitor);
+        ComputationEngine engine = new ComputationEngine();
+        CalculatorContext context = new CalculatorContext(engine);
+        // CalculatorClient client = new CalculatorClient("localhost", 3000);
 
         view.addObserver(context);
-        handler.addObserver(view);
-        context.addObserver(computer);
-        computer.addObserver(view);
+        context.addObserver(view);
+        engine.addObserver(view);
+        // engine.addObserver(client);
 
         view.show();
     }

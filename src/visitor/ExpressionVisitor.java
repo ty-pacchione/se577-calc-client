@@ -1,10 +1,10 @@
-package model.visitor;
+package visitor;
 
-import model.comp.Addition;
-import model.comp.Division;
-import model.comp.Multiplication;
-import model.comp.Number;
-import model.comp.Subtraction;
+import comp.Addition;
+import comp.Division;
+import comp.Multiplication;
+import comp.Number;
+import comp.Subtraction;
 
 public interface ExpressionVisitor {
     double visit(Number number);
