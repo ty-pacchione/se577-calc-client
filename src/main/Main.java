@@ -1,9 +1,13 @@
 package main;
 
-import view.Panel;
+import model.comp.ComputationHandler;
+import model.state.CalculatorContext;
+import view.CalculatorFrame;
 
 public class Main {
     public static void main(String[] args) {
-        new Panel("3+3=4").show();
+        ComputationHandler parser = new ComputationHandler();
+        CalculatorContext model = new CalculatorContext(parser);
+        new CalculatorFrame(model).show();
     }
 }
