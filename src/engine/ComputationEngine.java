@@ -1,13 +1,24 @@
-package comp;
+package engine;
 
-import observer.Subject;
-import visitor.ExpressionEvaluator;
+import java.text.DecimalFormat;
 
-public class ComputationEngine extends Subject {
-    public void compute(String calculation) {
+import comp.Addition;
+import comp.Division;
+import comp.Expression;
+import comp.Multiplication;
+import comp.Number;
+import comp.Subtraction;
+import obsrv.Observer;
+import obsrv.Subject;
+
+public class ComputationEngine extends Subject implements Observer {
+    private static DecimalFormat df = new DecimalFormat("#.#####");
+
+    private void compute(String calculation) {
         Expression expr = parseExpression(calculation);
-        double result = expr.accept(new ExpressionEvaluator());
-        String resultText = String.format("%.5f", result);
+        ExpressionEvaluator eval = new ExpressionEvaluator();
+        double result = expr.accept(eval);
+        String resultText = df.format(result);
         notifyObservers(calculation + "=" + resultText);
     }
 
@@ -55,5 +66,10 @@ public class ComputationEngine extends Subject {
 
     private Number parseNumber(String calc) {
         return new Number(Integer.parseInt(calc));
+    }
+
+    @Override
+    public void update(String message) {
+        compute(message);
     }
 }

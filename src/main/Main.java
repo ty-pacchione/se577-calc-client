@@ -1,21 +1,26 @@
 package main;
 
-// import client.CalculatorClient;
-import comp.ComputationEngine;
+import client.CalculatorClient;
+import contrl.CalculatorController;
+import engine.ComputationEngine;
 import state.CalculatorContext;
+import state.InputHandler;
 import view.CalculatorFrame;
 
 public class Main {
     public static void main(String[] args) {
         CalculatorFrame view = new CalculatorFrame();
+        InputHandler handler = new InputHandler();
+        CalculatorContext context = new CalculatorContext(handler);
+        CalculatorController controller = new CalculatorController(context);
         ComputationEngine engine = new ComputationEngine();
-        CalculatorContext context = new CalculatorContext(engine);
-        // CalculatorClient client = new CalculatorClient("localhost", 3000);
+        CalculatorClient client = new CalculatorClient();
 
-        view.addObserver(context);
-        context.addObserver(view);
+        view.addObserver(controller);
+        handler.addObserver(view);
+        context.addObserver(engine);
         engine.addObserver(view);
-        // engine.addObserver(client);
+        engine.addObserver(client);
 
         view.show();
     }

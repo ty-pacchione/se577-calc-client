@@ -9,16 +9,20 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import observer.Observer;
-import observer.Subject;
+import obsrv.Observer;
+import obsrv.Subject;
 
 public class CalculatorFrame extends Subject implements Observer {
-    public static final String[] buttons = {
-            "7", "8", "9", "/",
-            "4", "5", "6", "*",
-            "1", "2", "3", "-",
-            "0", "C", "=", "+"
+    public static final String[][] BUTTONS = {
+            { "7", "8", "9", "/" },
+            { "4", "5", "6", "*" },
+            { "1", "2", "3", "-" },
+            { "0", "C", "=", "+" }
     };
+
+    public static final int WIDTH = 400;
+    public static final int HEIGHT = 400;
+    public static final int TEXT_SIZE = 50;
 
     private JFrame frame;
     private JTextField displayPanel;
@@ -30,7 +34,7 @@ public class CalculatorFrame extends Subject implements Observer {
     private void makeFrame() {
         frame = new JFrame("Calculator");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(400, 500);
+        frame.setSize(WIDTH, HEIGHT);
         frame.setLayout(new BorderLayout());
 
         displayPanel = makeDisplayPanel();
@@ -45,23 +49,25 @@ public class CalculatorFrame extends Subject implements Observer {
 
         displayPanel.setEditable(false);
         displayPanel.setHorizontalAlignment(JTextField.RIGHT);
-        displayPanel.setFont(new Font("Monospaced", Font.PLAIN, 60));
+        displayPanel.setFont(new Font("Monospaced", Font.PLAIN, TEXT_SIZE));
 
         return displayPanel;
     }
 
     private JPanel makeButtonPanel() {
         JPanel buttonPanel = new JPanel();
-        buttonPanel.setLayout(new GridLayout(4, 4, 10, 10));
+        buttonPanel.setLayout(new GridLayout(BUTTONS.length, BUTTONS[0].length));
 
-        for (String text : buttons) {
-            JButton button = new JButton(text);
+        for (String[] row : BUTTONS) {
+            for (String buttonText : row) {
+                JButton button = new JButton(buttonText);
 
-            button.addActionListener(event -> {
-                notifyObservers(event.getActionCommand());
-            });
+                button.addActionListener(event -> {
+                    notifyObservers(event.getActionCommand());
+                });
 
-            buttonPanel.add(button);
+                buttonPanel.add(button);
+            }
         }
 
         return buttonPanel;
@@ -73,11 +79,15 @@ public class CalculatorFrame extends Subject implements Observer {
 
     @Override
     public void update(String message) {
-        int index = message.indexOf("=");
+        displayPanel.setText(getDisplayText(message));
+    }
+
+    private String getDisplayText(String text) {
+        int index = text.indexOf("=");
         if (index == -1) {
-            displayPanel.setText(message);
+            return text;
         } else {
-            displayPanel.setText(message.substring(index + 1));
+            return text.substring(index + 1);
         }
     }
 }

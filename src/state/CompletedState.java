@@ -1,6 +1,6 @@
 package state;
 
-public class SuccessState extends CalculatorState {
+public class CompletedState extends CalculatorState {
     @Override
     public void handleOperator(CalculatorContext context, String input) {
         context.clearInput();

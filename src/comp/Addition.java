@@ -1,6 +1,6 @@
 package comp;
 
-import visitor.ExpressionVisitor;
+import engine.ExpressionVisitor;
 
 public class Addition extends BinaryOperator {
     public Addition(Expression left, Expression right) {

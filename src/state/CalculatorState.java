@@ -1,9 +1,9 @@
 package state;
 
 public abstract class CalculatorState {
-    public void handleNumber(CalculatorContext context, String number) {
+    public void handleDigit(CalculatorContext context, String number) {
         context.addInput(number);
-        context.setState(new NumberState());
+        context.setState(new DigitState());
     }
 
     public void handleOperator(CalculatorContext context, String operator) {
@@ -12,8 +12,8 @@ public abstract class CalculatorState {
     }
 
     public void handleEquals(CalculatorContext context) {
-        context.compute();
-        context.setState(new SuccessState());
+        context.computeInput();
+        context.setState(new CompletedState());
     }
 
     public void handleClear(CalculatorContext context) {

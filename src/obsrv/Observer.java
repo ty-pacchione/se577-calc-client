@@ -1,4 +1,4 @@
-package observer;
+package obsrv;
 
 public interface Observer {
     void update(String message);

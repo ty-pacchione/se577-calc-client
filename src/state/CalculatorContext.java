@@ -1,56 +1,47 @@
 package state;
 
-import comp.ComputationEngine;
-import observer.Observer;
-import observer.Subject;
+import obsrv.Subject;
 
-public class CalculatorContext extends Subject implements Observer {
-    private String input;
+public class CalculatorContext extends Subject {
     private CalculatorState state;
-    private ComputationEngine engine;
+    private InputHandler handler;
 
-    public CalculatorContext(ComputationEngine engine) {
-        input = "";
+    public CalculatorContext(InputHandler handler) {
         state = new EmptyState();
-        this.engine = engine;
+        this.handler = handler;
     }
 
-    private void setInput(String newCalc) {
-        input = newCalc;
-        notifyObservers(input);
-    }
-    
-    void addInput(String next) {
-        setInput(input + next);
+    public void inputDigit(String number) {
+        state.handleDigit(this, number);
     }
 
-    void clearInput() {
-        setInput("");
+    public void inputOperator(String operator) {
+        state.handleOperator(this, operator);
+    }
+
+    public void inputEquals() {
+        state.handleEquals(this);
+    }
+
+    public void inputClear() {
+        state.handleClear(this);
     }
 
     void setState(CalculatorState newState) {
         state = newState;
     }
 
-    void compute() {
-        String calc = input;
-        clearInput();
-        engine.compute(calc);
+    void addInput(String nextInput) {
+        handler.addInput(nextInput);
     }
 
-    private void handleButton(String button) {
-        if (button.matches("[0-9]"))
-            state.handleNumber(this, button);
-        if (button.matches("[+\\-*/]"))
-            state.handleOperator(this, button);
-        if (button.equals("="))
-            state.handleEquals(this);
-        if (button.equals("C"))
-            state.handleClear(this);
+    void clearInput() {
+        handler.clearInput();
     }
 
-    @Override
-    public void update(String message) {
-        handleButton(message);
+    void computeInput() {
+        String input = handler.getInput();
+        handler.clearInput();
+        notifyObservers(input);
     }
 }

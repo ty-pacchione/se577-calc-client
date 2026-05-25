@@ -1,6 +1,6 @@
 package comp;
 
-import visitor.ExpressionVisitor;
+import engine.ExpressionVisitor;
 
 public class Number implements Expression {
     private int value;

@@ -1,6 +1,6 @@
 package comp;
 
-import visitor.ExpressionVisitor;
+import engine.ExpressionVisitor;
 
 public interface Expression {
     double accept(ExpressionVisitor visitor);

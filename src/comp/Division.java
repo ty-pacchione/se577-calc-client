@@ -1,6 +1,6 @@
 package comp;
 
-import visitor.ExpressionVisitor;
+import engine.ExpressionVisitor;
 
 public class Division extends BinaryOperator {
     public Division(Expression left, Expression right) {
