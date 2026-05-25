@@ -9,6 +9,10 @@ import view.CalculatorFrame;
 
 public class Main {
     public static void main(String[] args) {
+        new Main().run();
+    }
+
+    private void run() {
         CalculatorFrame view = new CalculatorFrame();
         InputHandler handler = new InputHandler();
         CalculatorContext context = new CalculatorContext(handler);
