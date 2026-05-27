@@ -23,3 +23,15 @@ To run the application, execute `./run.sh` from the root directory (will only wo
 * State Pattern: Used to determine button input behavior based on the state of the current calculation on the display panel. Relevant classes can be found in `src/state/`.
 
 * Client/Server Architecture - Implemented in `src/client/CalculatorClient.java` in this project and in `src/server/CalculatorServer.java` in the server-side project.
+
+## UML Diagrams
+
+The required UML diagrams can be found in `docs/`.
+
+### Sequence
+
+* All communication between components mediated by the observer pattern is represented with an arrow with a circle at the starting end. Direct method calls (and communications across the client/server connection) are represented by regular arrows.
+
+### Component
+
+* Classes that implement the subject/observer interfaces are indicated with arrows with hollow triangular arrowheads. Dependency arrows (ones with "use" labels) represent "has-a" association relationships.
